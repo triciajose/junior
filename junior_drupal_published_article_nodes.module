@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Junior Drupal Published Article Nodes feature.
+ */
+
+include_once 'junior_drupal_published_article_nodes.features.inc';
