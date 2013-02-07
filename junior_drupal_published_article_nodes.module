@@ -2,6 +2,85 @@
 /**
  * @file
  * Code for the Junior Drupal Published Article Nodes feature.
- */
+ *
+ *Your second task is to create a module named user_notes that will allow users to store their own notes about the previously *created article node type. This will NOT be another node type, instead you'll use a combination of hooks to accomplish the task. *Upon completion the module will need to do the following:
+*
+* Define permissions to allow the administrator to decide which roles can store notes.
+* Define a page with a form that allows users to add/edit notes about individual article nodes. Access should only be given to this * form if users have the proper permissions.
+* Define a section on the user profile page which shows the users 5 latest notes. Your module should allow other users who use it,  * to be able to change the way this data is outputted.
+*
+*/
 
 include_once 'junior_drupal_published_article_nodes.features.inc';
+
+
+function junior_drupal_published_article_nodes_menu() {
+  $items = array();
+
+  $items['user_home'] = array(
+    'title' => 'My Notes',
+    'page callback' => 'user_home',
+    'page arguments' => array(),
+     'access callback' => TRUE,
+    //'access callback' => 'custom_user_access',
+    //'access arguments' => array(''),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+function user_home() {
+  return 'I love notes!';
+
+
+}
+
+function user_changes_form($node, &$form_state) {
+  //   $form['uid'] = array(
+  //   '#type' => 'textfield', //you can find a list of available types in the form api
+  //   '#title' => 'UID',
+  //   '#maxlength' => 8,
+  //   '#required' => TRUE, //make this field required
+
+  // );
+
+    $form['note'] = array(
+    '#type' => 'textfield', //you can find a list of available types in the form api
+    '#title' => 'Note',
+    '#maxlength' => 300,
+    '#required' => TRUE, //make this field required
+  );
+
+
+  $form['selectbox'] = array (
+    '#type' => 'select',
+    '#title' => t('Select one'),
+    '#options' => array(
+      1 => 'Private',
+      2 => 'Public',
+    ),
+  );
+
+  $form['submit_botton'] = array(
+    '#type' => 'submit',
+    '#value' => t('Click Here!'),
+
+
+  );
+
+  return $form;
+
+
+
+
+}
+
+function junior_drupal_published_article_nodes_node_view($node, $view_mode, $langcode) {
+  $node->type = 'article node';
+
+  $form = drupal_get_form('user_changes_form');
+
+  $node->content['b'] = $form;
+
+}
