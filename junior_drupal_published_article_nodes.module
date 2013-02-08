@@ -21,7 +21,7 @@ function junior_drupal_published_article_nodes_menu() {
     'title' => 'My Notes',
     'page callback' => 'user_home',
     'page arguments' => array(),
-     'access callback' => TRUE,
+    'access callback' => TRUE,
     //'access callback' => 'custom_user_access',
     //'access arguments' => array(''),
     'type' => MENU_NORMAL_ITEM,
@@ -30,8 +30,8 @@ function junior_drupal_published_article_nodes_menu() {
   return $items;
 }
 
-function user_home() {
-  return 'I love notes!';
+function user_home($uid = NULL) {
+
 
 
 }
@@ -53,18 +53,18 @@ function user_changes_form($node, &$form_state) {
   );
 
 
-  $form['selectbox'] = array (
-    '#type' => 'select',
-    '#title' => t('Select one'),
-    '#options' => array(
-      1 => 'Private',
-      2 => 'Public',
-    ),
-  );
+  // $form['selectbox'] = array (
+  //   '#type' => 'select',
+  //   '#title' => t('Select one'),
+  //   '#options' => array(
+  //     1 => 'Private',
+  //     2 => 'Public',
+  //   ),
+  // );
 
   $form['submit_botton'] = array(
     '#type' => 'submit',
-    '#value' => t('Click Here!'),
+    '#value' => t('save note'),
 
 
   );
@@ -83,4 +83,54 @@ function junior_drupal_published_article_nodes_node_view($node, $view_mode, $lan
 
   $node->content['b'] = $form;
 
+}
+
+function junior_drupal_published_article_nodes_permission() {
+  $perms = array();
+
+  $perms['store notes'] = array(
+    'title' => t('store notes'),
+    'description' => t('to store notes'),
+  );
+
+return $perms;
+
+}
+
+function user_changes_form_submit($form, &$form_state) {
+global $user;
+
+$uid = $user->uid;
+$note = $form_state['values']['note'];
+
+$query = db_insert('junior_notes')
+       ->fields(array(
+       'uid'=> $uid,
+       'note' => $note,
+     ))
+     ->execute();
+
+       $form_state['redirect'] = array(
+    'user' ,
+  );
+}
+
+function junior_drupal_published_article_nodes_user_view($account, $view_mode, $langcode) {
+   if (user_access('store notes', $account)) {
+    $account->content['notes'] = array(
+      '#type' => 'user_profile_item',
+      '#title' => t('My Notes'),
+      '#markup' => theme('five_notes'),
+    );
+  }
+}
+
+function junior_drupal_published_article_nodes_theme() {
+  return array(
+    'five_notes' => array(
+    'template' => 'five_notes',
+      // 'function' => 'theme_helloworld',
+    // 'variables' => array('name' => NULL,),
+    ),
+  );
 }
