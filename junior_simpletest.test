@@ -1,0 +1,48 @@
+<?php
+
+/**
+ * Tests functionality of module
+ */
+
+class SimpletestJuniorTestCase extends DrupalWebTestCase {
+  protected $privileged_user;
+
+
+  public static function getInfo() {
+
+    return array(
+      'name' => "Junior SimpleTest",
+      'description' => "Make sure the Junior module is working properly",
+      'group' => 'Features',
+
+     );
+  }
+
+  public function setUp() {
+
+    parent::SetUp(array('junior_drupal_published_article_nodes'));
+     $this->privileged_user = $this->drupalCreateUser(array(
+      'store notes',
+     ));
+     $this->drupalLogin($this->privileged_user);
+  }
+
+  public function testJuniorSimpleCreateNode() {
+    $edit = array();
+    $edit['title'] = $this->randomName(8);
+    //$edit["body[und][0][value]"] = $this->randomName(20);
+    $edit["slug"] = $this->randomName(8);
+
+    $this->drupalPost('node/add/article-node', $edit, t('Preview'));
+    $this->drupalPost('node/add/article-node', $edit, t('Save'));
+    $this->assertText(t('@title has been created', array('@title' =>$edit['title'])));
+  }
+
+  public function testJuniorSimpleCreateNote() {
+    $edit = array();
+    $edit['note'] = $this->randomName(20);
+    $this->drupalPost('', $edit, t('save note'));
+    $this->assertText(t('My Notes'));
+  }
+
+}

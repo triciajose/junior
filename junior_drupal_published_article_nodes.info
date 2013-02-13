@@ -16,3 +16,5 @@ features[field][] = node-article_node-field_slug
 features[node][] = article_node
 features[views_view][] = published_article_nodes
 features_exclude[dependencies][ctools] = ctools
+
+files[] = junior_simpletest.test
