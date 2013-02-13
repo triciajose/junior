@@ -1,21 +1,20 @@
 <?php
 
 global $user;
-$result = db_query("SELECT uid, note FROM {junior_notes}");
 $uid = $user->uid;
 
-$row =$result->fetchAssoc();
+$result = db_query("SELECT uid, note FROM {junior_notes} WHERE uid = :uid", array(':uid' => $uid,
+  ));
 
-$count = 0;
 
-$return = array();
+$temp = array();
+$val = 0;
 
-if ($row['uid'] == $uid) {
-  for ($count; $count <= 4; $count++) {
-    $return[$count] = $row['note'];
-    $row;
-  }
+foreach ($result as $record) {
+  $temp[] = $record->note;
 }
+
+
 
 ?>
 
@@ -30,11 +29,12 @@ if ($row['uid'] == $uid) {
 </style>
 
 <ol>
-<li> <?php print $return[0] ?>
-<li> <?php print $return[1] ?>
-<li> <?php print $return[2] ?>
-<li> <?php print $return[3] ?>
-<li> <?php print $return[4] ?>
+<?php
+
+foreach ($temp as $note) {
+  print "<li> $note </li>";
+}
+?>
 
 </ol>
 

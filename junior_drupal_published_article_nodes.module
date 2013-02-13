@@ -21,7 +21,7 @@ function junior_drupal_published_article_nodes_menu() {
     'title' => 'My Notes',
     'page callback' => 'user_home',
     'page arguments' => array(),
-    'access callback' => TRUE,
+    //'access callback' => TRUE,
     //'access callback' => 'custom_user_access',
     //'access arguments' => array(''),
     'type' => MENU_NORMAL_ITEM,
@@ -77,12 +77,13 @@ function user_changes_form($node, &$form_state) {
 }
 
 function junior_drupal_published_article_nodes_node_view($node, $view_mode, $langcode) {
-  $node->type = 'article node';
+  if (user_access('store notes')) {
+    $node->type = 'article node';
 
-  $form = drupal_get_form('user_changes_form');
+    $form = drupal_get_form('user_changes_form');
 
-  $node->content['b'] = $form;
-
+    $node->content['b'] = $form;
+  }
 }
 
 function junior_drupal_published_article_nodes_permission() {
