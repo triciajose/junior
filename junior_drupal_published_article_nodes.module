@@ -99,12 +99,12 @@ return $perms;
 }
 
 function user_changes_form_submit($form, &$form_state) {
-global $user;
+  global $user;
 
-$uid = $user->uid;
-$note = $form_state['values']['note'];
+  $uid = $user->uid;
+  $note = $form_state['values']['note'];
 
-$query = db_insert('junior_notes')
+  $query = db_insert('junior_notes')
        ->fields(array(
        'uid'=> $uid,
        'note' => $note,
@@ -117,21 +117,41 @@ $query = db_insert('junior_notes')
 }
 
 function junior_drupal_published_article_nodes_user_view($account, $view_mode, $langcode) {
-   if (user_access('store notes', $account)) {
+  if (user_access('store notes', $account)) {
+    $temp = junior_drupal_published_article_nodes_get($account->uid);
     $account->content['notes'] = array(
       '#type' => 'user_profile_item',
       '#title' => t('My Notes'),
-      '#markup' => theme('five_notes'),
+      '#markup' => theme('five_notes', array('temp' => $temp)),
     );
   }
 }
 
 function junior_drupal_published_article_nodes_theme() {
-  return array(
-    'five_notes' => array(
-    'template' => 'five_notes',
-      // 'function' => 'theme_helloworld',
-    // 'variables' => array('name' => NULL,),
+
+return array(
+ 'five_notes' => array(
+ 'variables' => array('temp' => NULL,),
+ 'template' => 'five_notes',
+
     ),
   );
+}
+
+function junior_drupal_published_article_nodes_get($uid) {
+
+  $result = db_query("SELECT uid, note FROM {junior_notes} WHERE uid = :uid", array(':uid' => $uid,
+   ));
+
+
+  $temp = array();
+  $val = 0;
+
+  foreach ($result as $record) {
+    $temp[] = $record->note;
+  }
+
+  return $temp;
+
+
 }

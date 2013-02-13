@@ -1,18 +1,18 @@
 <?php
 
-global $user;
-$uid = $user->uid;
+// global $user;
+// $uid = $user->uid;
 
-$result = db_query("SELECT uid, note FROM {junior_notes} WHERE uid = :uid", array(':uid' => $uid,
-  ));
+// $result = db_query("SELECT uid, note FROM {junior_notes} WHERE uid = :uid", array(':uid' => $uid,
+//   ));
 
 
-$temp = array();
-$val = 0;
+// $temp = array();
+// $val = 0;
 
-foreach ($result as $record) {
-  $temp[] = $record->note;
-}
+// foreach ($result as $record) {
+//   $temp[] = $record->note;
+// }
 
 
 
