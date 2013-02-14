@@ -23,6 +23,7 @@ class SimpletestJuniorTestCase extends DrupalWebTestCase {
     parent::SetUp(array('junior_drupal_published_article_nodes'));
      $this->privileged_user = $this->drupalCreateUser(array(
       'store notes',
+      'create article_node'
      ));
      $this->drupalLogin($this->privileged_user);
   }
@@ -31,7 +32,7 @@ class SimpletestJuniorTestCase extends DrupalWebTestCase {
     $edit = array();
     $edit['title'] = $this->randomName(8);
     //$edit["body[und][0][value]"] = $this->randomName(20);
-    $edit["slug"] = $this->randomName(8);
+    $edit['slug'] = $this->randomName(8);
 
     $this->drupalPost('node/add/article-node', $edit, t('Preview'));
     $this->drupalPost('node/add/article-node', $edit, t('Save'));
