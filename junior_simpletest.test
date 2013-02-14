@@ -31,19 +31,19 @@ class SimpletestJuniorTestCase extends DrupalWebTestCase {
   public function testJuniorSimpleCreateNode() {
     $edit = array();
     $edit['title'] = $this->randomName(8);
-    //$edit["body[und][0][value]"] = $this->randomName(20);
-    $edit['slug'] = $this->randomName(8);
+    $edit["body[und][0][value]"] = $this->randomName(20);
+    $edit['field_slug[und][0][value]'] = $this->randomName(8);
 
-    $this->drupalPost('node/add/article-node', $edit, t('Preview'));
+   // $this->drupalPost('node/add/article-node', $edit, t('Preview'));
     $this->drupalPost('node/add/article-node', $edit, t('Save'));
     $this->assertText(t('@title has been created', array('@title' =>$edit['title'])));
-  }
 
-  public function testJuniorSimpleCreateNote() {
     $edit = array();
     $edit['note'] = $this->randomName(20);
     $this->drupalPost('', $edit, t('save note'));
     $this->assertText(t('My Notes'));
   }
+
+
 
 }
