@@ -23,7 +23,7 @@ class SimpletestJuniorTestCase extends DrupalWebTestCase {
     parent::SetUp(array('junior_drupal_published_article_nodes'));
      $this->privileged_user = $this->drupalCreateUser(array(
       'store notes',
-      'create article_node'
+      'create article_node content'
      ));
      $this->drupalLogin($this->privileged_user);
   }
